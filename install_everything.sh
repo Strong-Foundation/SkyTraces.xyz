@@ -60,3 +60,5 @@ function check_disk_space() {
 
 check_disk_space
 # Calls the check_disk_space function.
+
+# sudo apt-get install rtl-sdr -y
