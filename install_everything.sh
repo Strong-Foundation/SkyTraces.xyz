@@ -30,11 +30,11 @@ function installing_system_requirements() {
     # Check if the current Linux distribution is supported
     if { [ "${CURRENT_DISTRO}" == "ubuntu" ] || [ "${CURRENT_DISTRO}" == "debian" ] || [ "${CURRENT_DISTRO}" == "raspbian" ]; }; then
         # Check if required packages are already installed
-        if { [ ! -x "$(command -v curl)" ] || [ ! -x "$(command -v cut)" ]; }; then
+        if { [ ! -x "$(command -v curl)" ] || [ ! -x "$(command -v cut)" ] || [ ! -x "$(command -v rtl_test)" ] || [ ! -x "$(command -v rtl_adsb)" ]; }; then
             # Install required packages depending on the Linux distribution
             if { [ "${CURRENT_DISTRO}" == "ubuntu" ] || [ "${CURRENT_DISTRO}" == "debian" ] || [ "${CURRENT_DISTRO}" == "raspbian" ]; }; then
                 apt-get update
-                apt-get install curl coreutils -y
+                apt-get install curl coreutils rtl-sdr -y
             fi
         fi
     else
