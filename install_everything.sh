@@ -58,7 +58,43 @@ function check_disk_space() {
     fi
 }
 
-check_disk_space
 # Calls the check_disk_space function.
+check_disk_space
 
-# sudo apt-get install rtl-sdr -y
+# Create a service file for the rtl_adsb service
+function create_rtl_adsb_service() {
+    # Check if the rtl_adsb directory exists
+    if [ ! -d "/etc/rtl_adsb" ]; then
+        # If the rtl_adsb directory does not exist, create it
+        mkdir -p /etc/rtl_adsb
+    fi
+    # Check if the rtl_adsb service file exists
+    if [ -f /etc/systemd/system/rtl_adsb.service ]; then
+        # If the rtl_adsb service file exists, remove it
+        rm /etc/systemd/system/rtl_adsb.service
+    fi
+    # Create a service file for the rtl_adsb service
+    echo "[Unit]
+Description=RTL-ADSB Logging Service
+After=network.target
+
+[Service]
+ExecStart=rtl_adsb -V >> /etc/rtl_adsb/adsb.log
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target" >>/etc/systemd/system/rtl_adsb.service
+    # Reload the systemd manager configuration
+    systemctl daemon-reload
+    # Enable the rtl_adsb service
+    systemctl enable rtl_adsb
+    # Start the rtl_adsb service
+    systemctl start rtl_adsb
+    # Check the status of the rtl_adsb service
+    systemctl status rtl_adsb
+}
+
+# Call the function to create the rtl_adsb service file
+# create_rtl_adsb_service
